@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/orm"
 
 	"github.com/liumingmin/gbpm/models"
+	"github.com/liumingmin/gbpm/fsm"
 )
 
 
@@ -76,7 +77,7 @@ func (this *GBpmEngine) LoadInstanceExecs() {
 		if process,isok := this.processes[ruExcetion.ProcessId];isok{
 			instExec := &GBpmProcessExecution{}
 			instExec.process = process
-			instExec.ruExcetion = ruExcetion
+			instExec.ruExecution = ruExcetion
 			instExec.init()
 
 			this.procExecutions[ruExcetion.Id] = instExec
@@ -112,11 +113,11 @@ func (this *GBpmEngine) StartProcess(procCode string, params map[string]string) 
 }
 
 func (this *GBpmEngine) saveExecution(exection *GBpmProcessExecution){
-	if _,isok := this.procExecutions[exection.ruExcetion.Id];isok{
-		this.ormer.Update(exection.ruExcetion)
+	if _,isok := this.procExecutions[exection.ruExecution.Id];isok{
+		this.ormer.Update(exection.ruExecution)
 	}else{
-		this.ormer.Insert(exection.ruExcetion)
-		this.procExecutions[exection.ruExcetion.Id] = exection
+		this.ormer.Insert(exection.ruExecution)
+		this.procExecutions[exection.ruExecution.Id] = exection
 	}
 }
 
@@ -136,15 +137,15 @@ func (this *GBpmEngine) Transition(executionId string, taskId string) error {
 					break
 				case Kgbpm_node_fork:
 					this.transToFork(procExecution)
+				case Kgbpm_node_join:
+					this.transToJoin(procExecution)
 			}
 
-			this.ormer.Update(procExecution.ruExcetion)
 		}
-
 
 		return nil
 	}
-
+	//当前任务处理
 	return errors.New("not found process instance by id")
 }
 
@@ -160,7 +161,7 @@ func  (this *GBpmEngine) transToTask(execution *GBpmProcessExecution)  {
 }
 
 func  (this *GBpmEngine) transToEnd(execution *GBpmProcessExecution)  {
-	execution.ruExcetion.State = Kgbpm_exec_inactive
+	execution.ruExecution.State = Kgbpm_exec_finish
 }
 
 func  (this *GBpmEngine) transToFork(execution *GBpmProcessExecution)  {
@@ -173,19 +174,34 @@ func  (this *GBpmEngine) transToFork(execution *GBpmProcessExecution)  {
 		this.saveExecution(subExecution)
 	}
 
-	execution.ruExcetion.State = Kgbpm_exec_suspend
+	execution.ruExecution.State = Kgbpm_exec_suspend
 	this.saveExecution(execution)
 }
 
-//func  (this *GBpmEngine) transToJoin(node *models.GBpmDefNode, executionId string)  {
-//	taskInst := &models.GBpmRuTask{}
-//	taskInst.Id =  common.NewUuidV1()
-//	taskInst.Name = node.Name
-//	taskInst.ProcessId = node.ProcessId
-//	taskInst.ProcInstanceId = executionId
-//	taskInst.NodeId = node.Id
-//
-//	this.ormer.Insert(taskInst)
-//}
+func  (this *GBpmEngine) transToJoin(execution *GBpmProcessExecution)  {
+	execution.ruExecution.State = Kgbpm_exec_finish
+	this.saveExecution(execution)
+
+	if execution.parentExecution == nil{
+		return
+	}
+
+	childrenExecution := execution.parentExecution.childrenExecution
+
+	var isfinish bool = true
+	for _,childExecution := range childrenExecution{
+		if childExecution.ruExecution.State != Kgbpm_exec_finish{
+			isfinish = false
+		}
+	}
+
+	if isfinish{
+		execution.parentExecution.ruExecution.State = Kgbpm_exec_active
+		execution.parentExecution.currProcNode = execution.currProcNode
+		execution.parentExecution.SetState(fsm.State(execution.currProcNode.defNode.Id))
+
+		this.saveExecution(execution.parentExecution)
+	}
+}
 
 

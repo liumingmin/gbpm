@@ -24,6 +24,7 @@ const (
 	Kgbpm_exec_inactive     	= iota
 	Kgbpm_exec_active
 	Kgbpm_exec_suspend
+	Kgbpm_exec_finish
 )
 
 type GBpmProcess struct {

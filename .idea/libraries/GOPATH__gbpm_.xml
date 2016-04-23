@@ -1,39 +1,52 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;gbpm&gt;">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../beegolibchange.zip" />
-      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
-      <root url="file://$PROJECT_DIR$/../../../tsrv" />
       <root url="file://$PROJECT_DIR$/../.." />
-      <root url="file://$PROJECT_DIR$/../../../.svn" />
-      <root url="file://$PROJECT_DIR$/../../../编译参数.txt" />
+      <root url="file://$PROJECT_DIR$/../../../baselib.zip.bak" />
+      <root url="file://$PROJECT_DIR$/../../../beegolibchange.zip" />
       <root url="file://$PROJECT_DIR$/../../../dbx" />
+      <root url="file://$PROJECT_DIR$/../../../编译参数.txt" />
+      <root url="file://$PROJECT_DIR$/../../../baselib.zip" />
+      <root url="file://$PROJECT_DIR$/../../../xweb" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../tsrv" />
+      <root url="file://$PROJECT_DIR$/../../../src.zip" />
+      <root url="file://$PROJECT_DIR$/../../../xsrv2" />
+      <root url="file://$PROJECT_DIR$/../../../lpmsrv" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
     <excluded>
-      <root url="file://$PROJECT_DIR$/../../oikomi/FishChatServer/monitor/static/fonts/Font-Awesome-3.2.1/src/_layouts" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/.git" />
+      <root url="file://$PROJECT_DIR$/../../ylywyn/jpush-api-go-client/.git" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/_example" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/html/charset/testdata" />
+      <root url="file://$PROJECT_DIR$/../../astaxie/beego/.git" />
+      <root url="file://$PROJECT_DIR$/../../../xsrv2/.idea" />
       <root url="file://$PROJECT_DIR$/../../robfig/cron/.git" />
-      <root url="file://$PROJECT_DIR$/../../go-sql-driver/mysql/.git" />
+      <root url="file://$PROJECT_DIR$/../../../lpmsrv/.svn" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/http2/testdata" />
       <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/../../../xsrv2/.svn" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-sqlite3/_example" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-isatty/.git" />
+      <root url="file://$PROJECT_DIR$/../../../dbx/.idea" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-isatty/_example" />
+      <root url="file://$PROJECT_DIR$/../../labstack.old/gommon/.git" />
       <root url="file://$PROJECT_DIR$/../../astaxie/beego/utils/testdata" />
       <root url="file://$PROJECT_DIR$/../../lealife/leacrawler/.git" />
-      <root url="file://$PROJECT_DIR$/../../../.svn" />
-      <root url="file://$PROJECT_DIR$/../../oikomi/FishChatServer/.git" />
-      <root url="file://$PROJECT_DIR$/../../mattn/go-sqlite3/_example" />
+      <root url="file://$PROJECT_DIR$/../../labstack.old/echo/.git" />
       <root url="file://$PROJECT_DIR$/../../mattn/go-sqlite3/.git" />
-      <root url="file://$PROJECT_DIR$/../../oikomi/FishChatServer/monitor/static/fonts/Font-Awesome-3.2.1/src/_includes" />
-      <root url="file://$PROJECT_DIR$/../../astaxie/beego/.git" />
-      <root url="file://$PROJECT_DIR$/../../../gopkg.in/mgo.v2/.git" />
-      <root url="file://$PROJECT_DIR$/../../garyburd/redigo/.git" />
-      <root url="file://$PROJECT_DIR$/../../oikomi/FishChatServer/monitor/static/fonts/Font-Awesome-3.2.1/src/_plugins" />
-      <root url="file://$PROJECT_DIR$/../../../tsrv/.idea" />
-      <root url="file://$PROJECT_DIR$/../../jmoiron/sqlx/.git" />
+      <root url="file://$PROJECT_DIR$/.idea" />
+      <root url="file://$PROJECT_DIR$/../../labstack.old/echo/website/layouts/_default" />
+      <root url="file://$PROJECT_DIR$/../../go-sql-driver/mysql/.git" />
       <root url="file://$PROJECT_DIR$/.git" />
-      <root url="file://$PROJECT_DIR$/../.git" />
-      <root url="file://$PROJECT_DIR$/../../chanxuehong/wechat/.git" />
-      <root url="file://$PROJECT_DIR$/../../chanxuehong/wechat/json/testdata" />
-      <root url="file://$PROJECT_DIR$/../../../dbx/.idea" />
+      <root url="file://$PROJECT_DIR$/../../jmoiron/sqlx/.git" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/html/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../tsrv/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../tsrv/.svn" />
+      <root url="file://$PROJECT_DIR$/../../satori/go.uuid/.git" />
+      <root url="file://$PROJECT_DIR$/../../../lpmsrv/.idea" />
     </excluded>
   </library>
 </component>

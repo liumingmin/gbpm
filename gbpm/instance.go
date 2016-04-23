@@ -21,21 +21,24 @@ type GBpmProcessExecution struct {
 	process *GBpmProcess
 	currProcNode *GBpmProcessNode
 
-	ruExcetion *models.GBpmRuExecution
+	ruExecution *models.GBpmRuExecution
+
+	parentExecution *GBpmProcessExecution
+	childrenExecution map[string]*GBpmProcessExecution
 
 	machine *fsm.Machine
 }
 
 func (this *GBpmProcessExecution) CurrentState() fsm.State {
-	if this.ruExcetion != nil{
-		return fsm.State(this.ruExcetion.CurrNodeId)
+	if this.ruExecution != nil{
+		return fsm.State(this.ruExecution.CurrNodeId)
 	}
 	return fsm.State("")
 }
 
 func (this *GBpmProcessExecution) SetState(s fsm.State)    {
-	if this.ruExcetion != nil{
-		this.ruExcetion.CurrNodeId = string(s)
+	if this.ruExecution != nil{
+		this.ruExecution.CurrNodeId = string(s)
 	}
 }
 
@@ -44,7 +47,6 @@ func (this *GBpmProcessExecution) transition(nodeId string)  bool  {
 		err := this.machine.Transition(fsm.State(nodeId))
 		if err == nil{
 			this.currProcNode = procNode
-			this.ruExcetion.CurrNodeId = nodeId
 
 			return true
 		}
@@ -74,8 +76,10 @@ func createExecution(process *GBpmProcess) *GBpmProcessExecution{
 
 	procExec := &GBpmProcessExecution{}
 	procExec.process = process
-	procExec.ruExcetion = ruExcetion
+	procExec.ruExecution = ruExcetion
 	procExec.currProcNode = process.startProcNode
+	procExec.parentExecution = nil
+	procExec.childrenExecution = make(map[string]*GBpmProcessExecution)
 	procExec.init()
 
 	return procExec
@@ -84,18 +88,22 @@ func createExecution(process *GBpmProcess) *GBpmProcessExecution{
 func createSubExecution(parentExecution *GBpmProcessExecution) *GBpmProcessExecution{
 	ruExcetion := &models.GBpmRuExecution{}
 	ruExcetion.Id = common.NewUuidV1()
-	ruExcetion.Pid = ""
+	ruExcetion.Pid = parentExecution.ruExecution.Id
 	ruExcetion.ProcessId = parentExecution.process.defProcess.Id
-	ruExcetion.ProcessInstanceId = parentExecution.ruExcetion.ProcessInstanceId
+	ruExcetion.ProcessInstanceId = parentExecution.ruExecution.ProcessInstanceId
 	ruExcetion.Name = parentExecution.process.defProcess.Name
 	ruExcetion.State = Kgbpm_exec_active
 	ruExcetion.CurrNodeId = parentExecution.currProcNode.defNode.Id
 
 	procExec := &GBpmProcessExecution{}
 	procExec.process = parentExecution.process
-	procExec.ruExcetion = ruExcetion
+	procExec.ruExecution = ruExcetion
 	procExec.currProcNode = parentExecution.currProcNode
+	procExec.parentExecution = parentExecution
+	procExec.childrenExecution = make(map[string]*GBpmProcessExecution)
 	procExec.init()
+
+	parentExecution.childrenExecution[ruExcetion.Id] = procExec
 
 	return procExec
 }
@@ -106,8 +114,8 @@ func createTaskInstance(execution *GBpmProcessExecution) *models.GBpmRuTask {
 	taskInst.NodeId = execution.currProcNode.defNode.Id
 	taskInst.Name = execution.currProcNode.defNode.Name
 	taskInst.ProcessId = execution.currProcNode.defNode.ProcessId
-	taskInst.ProcInstanceId = execution.ruExcetion.ProcessInstanceId
-	taskInst.ExecutionId = execution.ruExcetion.Id
+	taskInst.ProcInstanceId = execution.ruExecution.ProcessInstanceId
+	taskInst.ExecutionId = execution.ruExecution.Id
 
 	return taskInst
 }

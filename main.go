@@ -1,34 +1,37 @@
 package main
 
 import (
-	"fmt"
-	_ "github.com/astaxie/beego"
-	"github.com/liumingmin/gbpm/gbpm"
-	_ "github.com/liumingmin/gbpm/models"
+	"os"
+	"time"
 
-	"tsrv/dbase"
+	_ "github.com/astaxie/beego"
+	"github.com/gin-gonic/gin"
+	_ "github.com/liumingmin/gbpm/models"
 )
 
 func main() {
-	Test()
-}
+	if len(os.Args) < 2 {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(os.Args[1])
+	}
 
-//----------------------------------------------------------------------------------------------------------------------
+	port := "8000"
+	if len(os.Args) > 2 {
+		port = os.Args[2]
+	}
 
+	time.Local, _ = time.LoadLocation("Asia/Shanghai")
 
-func Test() {
+	router := gin.New()
 
-	engine := &gbpm.GBpmEngine{}
-	engine.Init(dbase.NewOrm(""))
-	engine.LoadInstanceExecs()
+	if gin.IsDebugging() {
+		router.Use(gin.Logger())
+	}
 
-		_,err := engine.StartProcess("simple",nil)
+	router.Use(gin.Recovery())
 
-		if err != nil{
-			fmt.Print(err)
-			return
-		}
-		//engine.Transition(procInst.Id, "t2")
+	//controllers.RegisterRouter(router)
 
-	//engine.Transition("5718969654126b25b8000001","t4")
+	router.Run(":" + port)
 }

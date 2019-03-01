@@ -1,0 +1,27 @@
+server:
+  runmode: debug #release/test/debug
+  port: 8080
+
+databases:
+  -
+    key: default
+    host: 127.0.0.1:3306
+    name: ebc_debug
+    user: root
+    password:
+    ext:
+      maxPoolSize: 2
+      maxIdle: 1
+      maxOpen: 1
+      syncDb: true
+  -
+    key: slave
+    host: 127.0.0.1:3306
+    name: ebc_debug
+    user: root
+    password:
+    ext:
+      maxPoolSize: 2
+      maxIdle: 1
+      maxOpen: 1
+      syncDb: true
